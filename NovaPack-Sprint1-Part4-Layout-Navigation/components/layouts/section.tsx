@@ -1,0 +1,1 @@
+export function Section({children}:any){return <section className="py-12 lg:py-20">{children}</section>}

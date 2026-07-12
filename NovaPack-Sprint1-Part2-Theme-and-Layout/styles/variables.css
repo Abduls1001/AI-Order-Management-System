@@ -1,0 +1,13 @@
+:root{
+--font-sans:Inter,system-ui,sans-serif;
+--background:#ffffff;
+--foreground:#111827;
+--primary:#2563eb;
+--secondary:#f3f4f6;
+--border:#e5e7eb;
+--radius:12px;
+}
+.dark{
+--background:#0f172a;
+--foreground:#f8fafc;
+}
