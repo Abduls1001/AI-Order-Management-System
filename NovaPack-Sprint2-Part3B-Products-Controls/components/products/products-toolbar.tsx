@@ -1,0 +1,1 @@
+export function ProductsToolbar(){return <div>Toolbar</div>}

@@ -1,0 +1,1 @@
+export function ProductsLayout({children}:any){return <section className='grid gap-6 lg:grid-cols-[280px_1fr]'>{children}</section>}

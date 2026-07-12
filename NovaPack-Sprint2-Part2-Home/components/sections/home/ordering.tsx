@@ -1,0 +1,1 @@
+export function Ordering(){return <section><h2>How Ordering Works</h2></section>}

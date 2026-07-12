@@ -1,0 +1,1 @@
+feat(contact): finalize contact and quote module (Sprint 2 Part 6C)

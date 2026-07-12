@@ -1,0 +1,1 @@
+export function ProductSearch(){return <input placeholder='Search products...' className='w-full rounded border p-2'/>}

@@ -1,0 +1,1 @@
+export function CompanyTimeline(){return <section><h2>Company Timeline</h2><ul><li>2001 - Founded</li><li>2012 - National Expansion</li><li>2024 - AI Operations Platform</li></ul></section>}

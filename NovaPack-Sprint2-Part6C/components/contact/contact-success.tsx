@@ -1,0 +1,1 @@
+export function ContactSuccess(){return <div>Thank you. Your message has been received.</div>}

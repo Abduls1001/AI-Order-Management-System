@@ -1,0 +1,1 @@
+export function ProductsSkeleton(){return <div className='animate-pulse'>Loading...</div>}

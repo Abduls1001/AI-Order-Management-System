@@ -1,0 +1,1 @@
+export function BusinessHours(){return <section>Mon-Fri 9:00-17:00</section>}

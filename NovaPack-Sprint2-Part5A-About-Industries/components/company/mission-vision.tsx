@@ -1,0 +1,1 @@
+export function MissionVision(){return <section><h2>Mission & Vision</h2><div className='grid md:grid-cols-2 gap-6'><article><h3>Mission</h3><p>Deliver reliable industrial packaging.</p></article><article><h3>Vision</h3><p>Become the trusted global packaging partner.</p></article></div></section>}

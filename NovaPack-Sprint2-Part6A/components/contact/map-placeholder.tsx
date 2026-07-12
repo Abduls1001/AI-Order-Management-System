@@ -1,0 +1,1 @@
+export function MapPlaceholder(){return <div>Map Placeholder</div>}

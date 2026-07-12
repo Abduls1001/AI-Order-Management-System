@@ -1,0 +1,1 @@
+export function ProductFilters(){return <aside>Filters Placeholder</aside>}

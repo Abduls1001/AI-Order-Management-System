@@ -1,0 +1,1 @@
+export function ProductGallery(){return <div className='aspect-square rounded-xl border bg-gray-100 flex items-center justify-center'>Gallery Placeholder</div>}

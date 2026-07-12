@@ -1,0 +1,1 @@
+import {RelatedProductCard} from './related-product-card'; export function RelatedProductsGrid(){return <div className='grid gap-4 md:grid-cols-4'>{[1,2,3,4].map(i=><RelatedProductCard key={i}/>)}</div>}

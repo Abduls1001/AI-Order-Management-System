@@ -1,0 +1,1 @@
+export function ProductTabs(){return <div><div className='flex gap-4 border-b pb-2'><button>Description</button><button>Specifications</button><button>Shipping</button></div><div className='py-4'>Industrial packaging details.</div></div>}

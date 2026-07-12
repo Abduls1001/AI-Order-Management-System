@@ -1,0 +1,1 @@
+export function CompanyOverview(){return <section><h2>Trusted Packaging Partner</h2><p>Serving manufacturers, distributors and wholesalers with enterprise packaging solutions.</p></section>}

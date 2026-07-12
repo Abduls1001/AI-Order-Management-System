@@ -1,0 +1,1 @@
+export function Statistics(){return <section className='grid grid-cols-2 md:grid-cols-4 gap-6'><div><b>25+</b><p>Years</p></div><div><b>5,000+</b><p>Clients</p></div><div><b>12</b><p>Warehouses</p></div><div><b>98%</b><p>On-Time Delivery</p></div></section>}

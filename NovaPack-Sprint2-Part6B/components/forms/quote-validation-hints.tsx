@@ -1,0 +1,1 @@
+export function QuoteValidationHints(){return <div>Validation UI</div>}

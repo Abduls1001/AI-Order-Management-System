@@ -1,0 +1,1 @@
+export function IndustryCard({title}:{title:string}){return <div className='rounded-xl border p-5'><h3 className='font-semibold'>{title}</h3><p className='text-sm text-gray-500'>Solutions tailored for this industry.</p></div>}

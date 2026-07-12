@@ -1,0 +1,1 @@
+export function ProductSpecifications(){return <section><h2>Specifications</h2><ul><li>Material: Corrugated Board</li><li>Strength: Double Wall</li><li>Color: Kraft</li></ul></section>}
