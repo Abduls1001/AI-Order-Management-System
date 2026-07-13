@@ -1,1 +1,0 @@
-export function RequestQuoteForm(){return <form>{/* TODO integrate */}</form>}

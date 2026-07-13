@@ -1,1 +1,0 @@
-export function RelatedProducts(){return <section className='mt-12'><h2 className='text-2xl font-semibold'>Related Products</h2><div className='mt-4 rounded border p-6'>Related products grid (next update).</div></section>}

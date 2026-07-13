@@ -1,1 +1,0 @@
-export function IndustriesServed(){return <section><h2>Industries We Serve</h2></section>}

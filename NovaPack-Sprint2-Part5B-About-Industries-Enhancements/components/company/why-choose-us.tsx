@@ -1,1 +1,0 @@
-export function WhyChooseUs(){return <section><h2>Why Choose NovaPack</h2><ul><li>Enterprise-grade packaging</li><li>Fast fulfillment</li><li>Dedicated B2B support</li></ul></section>}

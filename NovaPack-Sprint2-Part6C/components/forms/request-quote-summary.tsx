@@ -1,1 +1,0 @@
-export function RequestQuoteSummary(){return <section>Quote Summary</section>}

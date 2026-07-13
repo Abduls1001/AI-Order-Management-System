@@ -1,1 +1,0 @@
-export function IndustriesGrid(){const items=['Manufacturing','Warehousing','Retail','Distribution','Logistics','Export'];return <section><h1>Industries We Serve</h1><div className='grid md:grid-cols-3 gap-4'>{items.map(i=><div key={i} className='rounded border p-4'>{i}</div>)}</div></section>}

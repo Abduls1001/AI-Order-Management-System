@@ -1,1 +1,0 @@
-export function Benefits(){return <section><h2>Why Choose NovaPack</h2></section>}

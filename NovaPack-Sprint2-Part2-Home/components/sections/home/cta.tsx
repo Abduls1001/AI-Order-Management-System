@@ -1,1 +1,0 @@
-export function CTA(){return <section className='rounded-xl bg-blue-600 p-10 text-white'><h2>Ready to Optimize Your Packaging Operations?</h2></section>}

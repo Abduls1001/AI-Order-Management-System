@@ -1,1 +1,0 @@
-export function QuoteCompanySection(){return <section>Company Details</section>}

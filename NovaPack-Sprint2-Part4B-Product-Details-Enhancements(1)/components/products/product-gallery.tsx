@@ -1,1 +1,0 @@
-import {ProductImageThumbnails} from './product-image-thumbnails'; export function ProductGallery(){return <section><div className='aspect-square rounded-xl border bg-gray-100 flex items-center justify-center'>Main Image</div><ProductImageThumbnails/></section>}

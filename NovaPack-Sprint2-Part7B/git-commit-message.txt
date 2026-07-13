@@ -1,1 +1,0 @@
-chore(sprint): finalize Sprint 2 polish and documentation

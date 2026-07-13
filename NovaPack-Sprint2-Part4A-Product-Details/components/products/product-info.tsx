@@ -1,1 +1,0 @@
-export function ProductInfo(){return <section><h1 className='text-3xl font-bold'>Double Wall Corrugated Box</h1><p>SKU: NP-COR-1001</p><p>Professional packaging solution for industrial shipping.</p></section>}

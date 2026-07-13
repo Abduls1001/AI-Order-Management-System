@@ -1,1 +1,0 @@
-export function CompanyValues(){return <section><h2>Core Values</h2><div className='grid md:grid-cols-4 gap-4'>{['Quality','Innovation','Reliability','Sustainability'].map(v=><div key={v} className='rounded border p-4'>{v}</div>)}</div></section>}

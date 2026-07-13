@@ -1,1 +1,0 @@
-feat(app): add error, loading, 404 and SEO foundation (Sprint 2 Part 7A)

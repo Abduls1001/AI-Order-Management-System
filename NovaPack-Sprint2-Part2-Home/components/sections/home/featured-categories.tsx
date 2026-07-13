@@ -1,1 +1,0 @@
-export function FeaturedCategories(){return <section><h2>Featured Categories</h2></section>}

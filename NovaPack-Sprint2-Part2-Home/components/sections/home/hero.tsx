@@ -1,1 +1,0 @@
-export function Hero(){return <section className='py-20'><h1 className='text-5xl font-bold'>AI Order Management for Modern Packaging Businesses</h1><p className='mt-4 max-w-2xl text-gray-600'>Streamline procurement, inventory, quotations and customer operations with NovaPack Industries.</p></section>}

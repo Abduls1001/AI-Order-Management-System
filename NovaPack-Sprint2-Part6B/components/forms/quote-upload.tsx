@@ -1,1 +1,0 @@
-export function QuoteUpload(){return <div>Attachment Upload UI</div>}

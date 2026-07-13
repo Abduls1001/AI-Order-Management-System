@@ -1,1 +1,0 @@
-export function ProductsEmptyState(){return <div>No products found.</div>}

@@ -1,1 +1,0 @@
-export function ContactInfo(){return <section>NovaPack Industries</section>}

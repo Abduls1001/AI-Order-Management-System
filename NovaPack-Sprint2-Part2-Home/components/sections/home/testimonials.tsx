@@ -1,1 +1,0 @@
-export function Testimonials(){return <section><h2>Client Testimonials</h2></section>}
