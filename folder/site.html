@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=\, initial-scale=1.0">
+  <title>Document</title>
+    <style>
+  #bc-root {
+    --bg: #F5F3EE;
+    --surface: #FFFFFF;
+    --ink: #1B2A2F;
+    --ink-soft: #55645F;
+    --forest: #2F4538;
+    --forest-dark: #1F2F26;
+    --rust: #A8551F;
+    --mustard: #B4901A;
+    --navy: #274156;
+    --line: #DCD6C9;
+    --danger: #A8321E;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    min-height: 100%;
+    position: relative;
+  }
+  #bc-root * { box-sizing: border-box; }
+  #bc-root .disp {
+    font-family: -apple-system, "Arial Black", system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+  }
+  #bc-root .mono {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  #bc-root a, #bc-root button { font-family: inherit; }
+  #bc-root button { cursor: pointer; }
+  #bc-root button:focus-visible, #bc-root input:focus-visible, #bc-root select:focus-visible, #bc-root a:focus-visible {
+    outline: 2px solid var(--forest); outline-offset: 2px;
+  }
+
+  /* ---- Nav ---- */
+  .bc-nav {
+    position: sticky; top: 0; z-index: 40;
+    background: rgba(245,243,238,0.92); backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  .bc-nav-inner {
+    max-width: 1180px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  }
+  .bc-logo { display: flex; align-items: center; gap: 10px; background: none; border: none; padding: 0; }
+  .bc-logo-mark {
+    width: 34px; height: 34px; border-radius: 50%; background: var(--forest);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .bc-logo-text { font-size: 16px; letter-spacing: 0.06em; line-height: 1.05; text-align: left; color: var(--ink); }
+  .bc-logo-text span { display: block; font-size: 10px; letter-spacing: 0.18em; color: var(--ink-soft); font-weight: 600; margin-top: 2px; text-transform: uppercase; }
+  .bc-navlinks { display: flex; align-items: center; gap: 4px; }
+  .bc-navlink {
+    background: none; border: none; padding: 8px 14px; font-size: 13px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); border-radius: 999px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .bc-navlink:hover { color: var(--ink); background: #EAE6DB; }
+  .bc-navlink.active { color: var(--surface); background: var(--forest); }
+  .bc-navright { display: flex; align-items: center; gap: 10px; }
+  .bc-icon-btn {
+    position: relative; background: none; border: 1px solid var(--line); border-radius: 10px;
+    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .bc-icon-btn:hover { border-color: var(--forest); background: #EAE6DB; }
+  .bc-badge {
+    position: absolute; top: -6px; right: -6px; background: var(--rust); color: white;
+    font-size: 10px; font-weight: 800; min-width: 18px; height: 18px; border-radius: 999px;
+    display: flex; align-items: center; justify-content: center; padding: 0 4px;
+  }
+
+  /* ---- Layout helpers ---- */
+  .bc-page { max-width: 1180px; margin: 0 auto; padding: 0 24px 80px; }
+  .bc-section-label {
+    font-size: 12px; font-weight: 800; letter-spacing: 0.16em; color: var(--rust);
+    text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+  }
+  .bc-section-label::before { content: ""; width: 22px; height: 2px; background: var(--rust); display: inline-block; }
+
+  /* ---- Hero ---- */
+  .bc-hero {
+    position: relative; overflow: hidden; background: var(--forest); color: #F3F0E7;
+    border-radius: 0 0 28px 28px; margin-bottom: 56px;
+  }
+  .bc-hero-topo { position: absolute; inset: 0; opacity: 0.16; pointer-events: none; }
+  .bc-hero-inner {
+    position: relative; max-width: 1180px; margin: 0 auto; padding: 84px 24px 68px;
+  }
+  .bc-hero-eyebrow { font-size: 12px; letter-spacing: 0.2em; font-weight: 700; color: #C9BFA0; text-transform: uppercase; margin-bottom: 18px; }
+  .bc-hero h1 { font-size: clamp(38px, 6vw, 68px); line-height: 0.98; margin: 0 0 20px; max-width: 780px; }
+  .bc-hero h1 em { font-style: normal; color: #E9C46A; }
+  .bc-hero p { font-size: 16px; color: #D9D3C2; max-width: 480px; line-height: 1.6; margin: 0 0 32px; }
+  .bc-hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+  .bc-btn {
+    display: inline-flex; align-items: center; gap: 8px; border: none; border-radius: 10px;
+    padding: 14px 26px; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.15s;
+  }
+  .bc-btn:active { transform: translateY(1px); }
+  .bc-btn-primary { background: #E9C46A; color: #1F2F26; }
+  .bc-btn-primary:hover { background: #f0cf80; box-shadow: 0 6px 18px rgba(0,0,0,0.18); }
+  .bc-btn-outline { background: transparent; color: #F3F0E7; border: 1.5px solid rgba(243,240,231,0.5); }
+  .bc-btn-outline:hover { border-color: #F3F0E7; background: rgba(255,255,255,0.06); }
+  .bc-btn-dark { background: var(--ink); color: white; }
+  .bc-btn-dark:hover { background: #0f1a1d; }
+  .bc-btn-dark:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .bc-feature-strip {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(243,240,231,0.15);
+    margin-top: 56px; border-radius: 14px; overflow: hidden;
+  }
+  .bc-feature { background: rgba(255,255,255,0.04); padding: 18px 20px; display: flex; align-items: center; gap: 12px; }
+  .bc-feature svg { flex-shrink: 0; color: #E9C46A; }
+  .bc-feature-title { font-size: 13px; font-weight: 800; letter-spacing: 0.02em; }
+  .bc-feature-sub { font-size: 12px; color: #C9BFA0; }
+
+  /* ---- Category chips ---- */
+  .bc-cats { display: flex; gap: 10px; flex-wrap: wrap; margin: 6px 0 32px; }
+  .bc-cat-chip {
+    background: var(--surface); border: 1.5px solid var(--line); border-radius: 999px;
+    padding: 9px 18px; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink-soft); transition: all 0.15s; display: flex; align-items: center; gap: 8px;
+  }
+  .bc-cat-chip:hover { border-color: var(--ink); color: var(--ink); }
+  .bc-cat-chip.active { background: var(--ink); border-color: var(--ink); color: white; }
+  .bc-cat-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* ---- Product grid ---- */
+  .bc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  @media (max-width: 980px) { .bc-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .bc-grid { grid-template-columns: 1fr; } }
+
+  .bc-card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
+    display: flex; flex-direction: column; transition: box-shadow 0.18s, transform 0.18s;
+  }
+  .bc-card:hover { box-shadow: 0 14px 30px rgba(27,42,47,0.1); transform: translateY(-3px); }
+  .bc-card-media {
+    aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; position: relative;
+  }
+  .bc-card-media svg { width: 46%; height: 46%; }
+  .bc-tag {
+    position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.92);
+    border: 1px dashed var(--ink); border-radius: 6px; padding: 5px 8px 6px; transform: rotate(3deg);
+    font-size: 11px; line-height: 1.3; text-align: right; transition: transform 0.15s;
+  }
+  .bc-card:hover .bc-tag { transform: rotate(0deg); }
+  .bc-tag::before {
+    content: ""; position: absolute; left: -4px; top: 50%; transform: translateY(-50%);
+    width: 6px; height: 6px; border-radius: 50%; background: var(--bg); border: 1px solid var(--ink);
+  }
+  .bc-tag-price { font-weight: 800; font-size: 13px; }
+  .bc-tag-sku { color: var(--ink-soft); font-size: 9px; letter-spacing: 0.04em; }
+  .bc-card-body { padding: 16px 16px 18px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .bc-card-cat { font-size: 10px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+  .bc-card-name { font-size: 15px; font-weight: 700; margin: 0; line-height: 1.3; }
+  .bc-card-desc { font-size: 12.5px; color: var(--ink-soft); line-height: 1.5; margin: 0; flex: 1; }
+  .bc-add-btn {
+    margin-top: 6px; background: var(--ink); color: white; border: none; border-radius: 9px;
+    padding: 10px 14px; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+    display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.15s, transform 0.1s;
+  }
+  .bc-add-btn:hover { background: var(--forest); }
+  .bc-add-btn:active { transform: scale(0.98); }
+  .bc-add-btn.added { background: var(--forest-dark); }
+
+  /* ---- Cart drawer ---- */
+  .bc-overlay {
+    position: fixed; inset: 0; background: rgba(27,42,47,0.4); z-index: 50;
+    opacity: 0; pointer-events: none; transition: opacity 0.25s;
+  }
+  .bc-overlay.open { opacity: 1; pointer-events: auto; }
+  .bc-drawer {
+    position: fixed; top: 0; right: 0; height: 100%; width: 420px; max-width: 92vw; background: var(--bg);
+    z-index: 60; transform: translateX(100%); transition: transform 0.3s ease; display: flex; flex-direction: column;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.15);
+  }
+  .bc-drawer.open { transform: translateX(0); }
+  .bc-drawer-head { padding: 20px 22px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; }
+  .bc-drawer-title { font-size: 18px; margin: 0; }
+  .bc-drawer-close { background: none; border: none; padding: 6px; border-radius: 8px; }
+  .bc-drawer-close:hover { background: #EAE6DB; }
+  .bc-drawer-body { flex: 1; overflow-y: auto; padding: 10px 22px; }
+  .bc-cart-item { display: flex; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .bc-cart-item-media {
+    width: 62px; height: 62px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .bc-cart-item-media svg { width: 55%; height: 55%; }
+  .bc-cart-item-info { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+  .bc-cart-item-name { font-size: 13.5px; font-weight: 700; }
+  .bc-cart-item-price { font-size: 12px; color: var(--ink-soft); }
+  .bc-qty-row { display: flex; align-items: center; gap: 10px; margin-top: 4px; }
+  .bc-qty-btn { width: 24px; height: 24px; border-radius: 6px; border: 1px solid var(--line); background: white; display: flex; align-items: center; justify-content: center; }
+  .bc-qty-btn:hover { border-color: var(--ink); }
+  .bc-qty-val { font-size: 13px; font-weight: 700; min-width: 16px; text-align: center; }
+  .bc-remove-btn { margin-left: auto; background: none; border: none; color: var(--ink-soft); font-size: 11px; text-decoration: underline; }
+  .bc-remove-btn:hover { color: var(--danger); }
+  .bc-drawer-empty { text-align: center; padding: 60px 20px; color: var(--ink-soft); }
+  .bc-drawer-empty svg { margin-bottom: 14px; color: var(--line); }
+  .bc-drawer-foot { border-top: 1px solid var(--line); padding: 18px 22px 22px; }
+  .bc-row { display: flex; justify-content: space-between; font-size: 13.5px; margin-bottom: 8px; color: var(--ink-soft); }
+  .bc-row.total { color: var(--ink); font-weight: 800; font-size: 16px; margin-top: 10px; }
+  .bc-drawer-foot .bc-btn { width: 100%; justify-content: center; margin-top: 10px; }
+
+  /* ---- Toast ---- */
+  .bc-toast {
+    position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(20px); z-index: 80;
+    background: var(--ink); color: white; padding: 12px 20px; border-radius: 10px; font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; gap: 10px; opacity: 0; pointer-events: none; transition: all 0.25s;
+  }
+  .bc-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ---- Checkout ---- */
+  .bc-checkout-wrap { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: start; }
+  @media (max-width: 860px) { .bc-checkout-wrap { grid-template-columns: 1fr; } }
+  .bc-form-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 28px; }
+  .bc-form-card h3 { font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 18px; color: var(--ink-soft); }
+  .bc-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .bc-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+  .bc-field.full { grid-column: 1 / -1; }
+  .bc-field label { font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-soft); }
+  .bc-field input, .bc-field select {
+    border: 1.5px solid var(--line); border-radius: 9px; padding: 11px 12px; font-size: 14px; background: white; color: var(--ink);
+    font-family: inherit;
+  }
+  .bc-field input:focus, .bc-field select:focus { border-color: var(--forest); outline: none; }
+  .bc-field .bc-error { color: var(--danger); font-size: 11px; font-weight: 600; }
+  .bc-field input.err { border-color: var(--danger); }
+  .bc-summary-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 24px; position: sticky; top: 90px; }
+  .bc-summary-item { display: flex; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .bc-summary-media { width: 46px; height: 46px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .bc-summary-media svg { width: 55%; height: 55%; }
+  .bc-summary-item-name { font-size: 13px; font-weight: 700; }
+  .bc-summary-item-qty { font-size: 11.5px; color: var(--ink-soft); }
+  .bc-summary-item-price { margin-left: auto; font-size: 13px; font-weight: 700; }
+
+  /* ---- Confirmation ---- */
+  .bc-confirm { text-align: center; padding: 70px 20px; max-width: 560px; margin: 0 auto; }
+  .bc-confirm-icon { width: 70px; height: 70px; border-radius: 50%; background: var(--forest); color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; }
+  .bc-confirm h2 { font-size: 30px; margin: 0 0 10px; }
+  .bc-confirm p { color: var(--ink-soft); font-size: 14.5px; line-height: 1.6; margin: 0 0 6px; }
+  .bc-confirm-id { font-size: 13px; margin: 18px 0 30px; }
+  .bc-confirm-id span { background: #EAE6DB; padding: 4px 10px; border-radius: 6px; font-weight: 700; }
+  .bc-confirm-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  /* ---- Order history ---- */
+  .bc-order { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; margin-bottom: 16px; overflow: hidden; }
+  .bc-order-head { padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; gap: 14px; flex-wrap: wrap; }
+  .bc-order-head:hover { background: #FAF8F3; }
+  .bc-order-id { font-size: 13px; font-weight: 800; }
+  .bc-order-date { font-size: 12px; color: var(--ink-soft); }
+  .bc-order-total { font-size: 14px; font-weight: 800; }
+  .bc-order-count { font-size: 11.5px; color: var(--ink-soft); background: var(--bg); padding: 3px 10px; border-radius: 999px; }
+  .bc-order-body { border-top: 1px solid var(--line); padding: 6px 20px 16px; display: none; }
+  .bc-order-body.open { display: block; }
+  .bc-order-line { display: flex; justify-content: space-between; padding: 8px 0; font-size: 13px; border-bottom: 1px dashed var(--line); }
+  .bc-order-line:last-child { border-bottom: none; }
+  .bc-order-empty { text-align: center; padding: 80px 20px; color: var(--ink-soft); }
+  .bc-order-empty svg { margin-bottom: 16px; color: var(--line); }
+
+  /* ---- Loading ---- */
+  .bc-loading { display: flex; align-items: center; justify-content: center; padding: 120px 20px; color: var(--ink-soft); gap: 12px; font-size: 14px; }
+  .bc-spinner { width: 20px; height: 20px; border: 2.5px solid var(--line); border-top-color: var(--forest); border-radius: 50%; animation: bc-spin 0.7s linear infinite; }
+  @keyframes bc-spin { to { transform: rotate(360deg); } }
+
+  .bc-footer { border-top: 1px solid var(--line); margin-top: 40px; padding: 30px 24px; text-align: center; color: var(--ink-soft); font-size: 12px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    #bc-root * { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+
+<div id="bc-root"></div>
+
+<script>
+(function(){
+  const root = document.getElementById('bc-root');
+
+  /* ---------------- Icons (line-art gear glyphs) ---------------- */
+  const ICONS = {
+    tent: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M50 22 L88 82 H12 Z"/><path d="M50 22 V82"/><path d="M34 82 L50 52 L66 82"/><path d="M8 82 H92"/></svg>`,
+    lantern: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M50 10 V20"/><rect x="32" y="24" width="36" height="14" rx="3"/><path d="M38 38 L34 82 H66 L62 38 Z"/><path d="M38 52 H62 M38 66 H62"/><rect x="32" y="82" width="36" height="8" rx="2"/></svg>`,
+    stove: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="60" r="26"/><path d="M50 34 V16 M38 40 L28 24 M62 40 L72 24"/><circle cx="50" cy="60" r="7"/></svg>`,
+    sleepbag: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M40 12 h20 a8 8 0 0 1 8 8 v54 a12 12 0 0 1 -12 12 h-12 a12 12 0 0 1 -12 -12 v-54 a8 8 0 0 1 8 -8 Z"/><path d="M40 30 h20 M40 46 h20 M40 62 h20"/></svg>`,
+    backpack: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M34 30 v-6 a16 16 0 0 1 32 0 v6"/><rect x="26" y="30" width="48" height="58" rx="10"/><rect x="38" y="42" width="24" height="20" rx="3"/><path d="M26 50 h-4 v18 h4"/><path d="M74 50 h4 v18 h-4"/></svg>`,
+    poles: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M30 14 L30 92"/><path d="M22 14 h16"/><path d="M70 14 L70 92"/><path d="M62 14 h16"/><path d="M30 60 l-6 8 M70 60 l6 8"/></svg>`,
+    boot: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M38 14 v34 l-24 18 a8 8 0 0 0 -3 6 v10 a4 4 0 0 0 4 4 h62 a4 4 0 0 0 4 -4 c0 -14 -10 -20 -22 -24 l-9 -3 v-41 Z"/><path d="M38 26 h14 M38 34 h14"/></svg>`,
+    compass: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="50" r="38"/><path d="M50 50 L64 34 L58 58 L50 50 L42 58 L36 34 Z" fill="currentColor" stroke="none"/><circle cx="50" cy="50" r="3" fill="currentColor"/></svg>`,
+    bottle: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="34" y="10" width="16" height="10" rx="2"/><path d="M36 20 h12 l6 12 v50 a8 8 0 0 1 -8 8 h-8 a8 8 0 0 1 -8 -8 v-50 Z"/><path d="M30 54 h24"/></svg>`,
+    drybag: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M26 40 a24 20 0 0 1 48 0 v34 a10 10 0 0 1 -10 10 h-28 a10 10 0 0 1 -10 -10 Z"/><path d="M30 26 L70 14 M30 26 L34 40 M70 14 L66 40"/></svg>`,
+    filter: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="30" y="14" width="40" height="20" rx="4"/><path d="M40 34 v24 M60 34 v24"/><path d="M34 58 h32 l-8 28 h-16 Z"/></svg>`,
+    gloves: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M40 46 v-24 a6 6 0 0 1 12 0 v18 M52 40 v-16 a6 6 0 0 1 12 0 v20"/><path d="M40 40 a6 6 0 0 0 -12 6 v14 a24 24 0 0 0 24 24 h4 a20 20 0 0 0 20 -20 v-24 a6 6 0 0 0 -12 -4"/></svg>`,
+    shell: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M38 14 L50 22 L62 14 L78 24 L70 38 L64 34 V88 H36 V34 L30 38 L22 24 Z"/><path d="M50 22 v66"/></svg>`,
+    beanie: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M26 58 a24 30 0 0 1 48 0 v6 h-48 Z"/><rect x="24" y="64" width="52" height="14" rx="4"/><circle cx="50" cy="24" r="5"/></svg>`,
+    fleece: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M38 16 L50 24 L62 16 L76 30 L66 40 V86 H34 V40 L24 30 Z"/><path d="M50 24 v10"/></svg>`,
+    shades: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="30" cy="52" r="16"/><circle cx="70" cy="52" r="16"/><path d="M46 48 h8 M14 46 L22 42 M86 46 L78 42"/></svg>`,
+    knife: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 80 L64 36 a8 8 0 0 1 11 11 L31 91 Z"/><path d="M64 36 L80 20 M70 42 L84 28"/></svg>`,
+    mountain: `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 78 L38 34 L54 58 L64 44 L90 78 Z"/><path d="M34 40 l4 6 M60 50 l4 6"/></svg>`,
+    cart: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>`,
+    box: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.73Z"/><path d="M3.3 7 12 12l8.7-5M12 22V12"/></svg>`,
+    close: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>`,
+    plus: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>`,
+    minus: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 12h14"/></svg>`,
+    check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" width="34" height="34"><path d="M20 6 9 17l-5-5"/></svg>`,
+    truck: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>`,
+    shield: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>`,
+    leaf: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M11 20A7 7 0 0 1 4 13c0-5 8-11 8-11s8 6 8 11a7 7 0 0 1-7 7c-2 0-3-1-3-1"/><path d="M4 20c4-4 8-8 15-13"/></svg>`,
+  };
+
+  /* ---------------- Data ---------------- */
+  const CATS = {
+    camp:  { label: 'Camp',    color: 'var(--forest)', bg: '#E4E9DF' },
+    trail: { label: 'Trail',   color: 'var(--rust)',   bg: '#F1E2D4' },
+    water: { label: 'Water',   color: 'var(--navy)',   bg: '#DFE6EC' },
+    apparel:{ label: 'Apparel',color: 'var(--mustard)',bg: '#F1E9D0' },
+  };
+
+  const PRODUCTS = [
+    { id: 'CS-014', name: 'Ridgeline 2P Tent', cat: 'camp', price: 249, icon: 'tent', desc: 'Freestanding two-person shelter, 3-season, packs to 4.2 lbs.' },
+    { id: 'CS-021', name: 'Ember Camp Lantern', cat: 'camp', price: 38, icon: 'lantern', desc: 'Collapsible LED lantern, 200 lumens, 40-hour runtime.' },
+    { id: 'CS-032', name: 'Trailhead Camp Stove', cat: 'camp', price: 64, icon: 'stove', desc: 'Compact canister stove, boils a liter in 100 seconds.' },
+    { id: 'CS-045', name: 'Alpine Sleeping Bag', cat: 'camp', price: 189, icon: 'sleepbag', desc: 'Down-fill mummy bag rated to 15°F, packs small.' },
+    { id: 'TR-108', name: 'Summit Daypack 28L', cat: 'trail', price: 118, icon: 'backpack', desc: 'Ventilated back panel, hydration-ready, 28 liter capacity.' },
+    { id: 'TR-119', name: 'Talus Trekking Poles', cat: 'trail', price: 54, icon: 'poles', desc: 'Carbon-fiber poles with quick-lock height adjustment, pair.' },
+    { id: 'TR-127', name: 'Ridgerunner Hiking Boots', cat: 'trail', price: 142, icon: 'boot', desc: 'Waterproof leather boots, aggressive tread, ankle support.' },
+    { id: 'TR-140', name: 'Contour Topo Compass', cat: 'trail', price: 29, icon: 'compass', desc: 'Baseplate compass with adjustable declination and sighting mirror.' },
+    { id: 'WT-203', name: 'Glacier Steel Bottle 32oz', cat: 'water', price: 34, icon: 'bottle', desc: 'Double-wall insulated, keeps cold 24 hours, hot 12.' },
+    { id: 'WT-217', name: 'Riverbend Dry Bag 20L', cat: 'water', price: 46, icon: 'drybag', desc: 'Roll-top dry bag, fully submersible seams, clip closure.' },
+    { id: 'WT-226', name: 'Current Water Filter', cat: 'water', price: 58, icon: 'filter', desc: 'Hollow-fiber filter removes 99.9% of bacteria and protozoa.' },
+    { id: 'WT-233', name: 'Paddle Grip Gloves', cat: 'water', price: 22, icon: 'gloves', desc: 'Quick-dry neoprene gloves with reinforced palm grip.' },
+    { id: 'AP-301', name: 'Windward Rain Shell', cat: 'apparel', price: 128, icon: 'shell', desc: 'Fully seam-sealed waterproof shell, packable, adjustable hood.' },
+    { id: 'AP-312', name: 'Basecamp Wool Beanie', cat: 'apparel', price: 26, icon: 'beanie', desc: 'Merino wool knit, moisture-wicking, one size fits most.' },
+    { id: 'AP-320', name: 'Traverse Fleece Jacket', cat: 'apparel', price: 96, icon: 'fleece', desc: 'Midweight fleece with brushed interior, full front zip.' },
+    { id: 'AP-338', name: 'Horizon Sunglasses', cat: 'apparel', price: 74, icon: 'shades', desc: 'Polarized lenses, impact-resistant frame, UV400 protection.' },
+  ];
+  const byId = id => PRODUCTS.find(p => p.id === id);
+
+  /* ---------------- State ---------------- */
+  let state = {
+    view: 'loading',      // loading | home | shop | checkout | confirmation | orders
+    cart: {},              // { productId: qty }
+    cartOpen: false,
+    shopFilter: 'all',
+    orders: [],
+    lastOrder: null,
+    toast: null,
+    formErrors: {},
+  };
+
+  function cartCount() { return Object.values(state.cart).reduce((a,b)=>a+b,0); }
+  function cartItems() { return Object.entries(state.cart).map(([id,qty]) => ({ ...byId(id), qty })).filter(i=>i.id); }
+  function cartSubtotal() { return cartItems().reduce((s,i)=>s+i.price*i.qty,0); }
+
+  async function saveCart() {
+    try { await window.storage.set('cart', JSON.stringify(state.cart), false); }
+    catch(e) { console.error('cart save failed', e); }
+  }
+  async function loadCart() {
+    try {
+      const r = await window.storage.get('cart', false);
+      state.cart = r && r.value ? JSON.parse(r.value) : {};
+    } catch(e) { state.cart = {}; }
+  }
+  async function loadOrders() {
+    try {
+      const r = await window.storage.get('orders', false);
+      state.orders = r && r.value ? JSON.parse(r.value) : [];
+    } catch(e) { state.orders = []; }
+  }
+  async function saveOrders() {
+    try { await window.storage.set('orders', JSON.stringify(state.orders), false); }
+    catch(e) { console.error('orders save failed', e); }
+  }
+
+  function showToast(msg) {
+    state.toast = msg;
+    render();
+    setTimeout(()=>{ state.toast = null; renderToastOnly(); }, 1800);
+  }
+
+  window.bcAddToCart = function(id, btnEl) {
+    state.cart[id] = (state.cart[id]||0)+1;
+    saveCart();
+    updateCartBadge();
+    if (btnEl) {
+      const original = btnEl.innerHTML;
+      btnEl.classList.add('added');
+      btnEl.innerHTML = ICONS.check.replace('width="34" height="34"','width="14" height="14"') + ' Added';
+      setTimeout(()=>{ btnEl.classList.remove('added'); btnEl.innerHTML = original; }, 900);
+    }
+    showToastQuiet('Added to cart');
+  };
+
+  function showToastQuiet(msg){
+    let t = root.querySelector('.bc-toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(window.__bcToastTimer);
+    window.__bcToastTimer = setTimeout(()=> t.classList.remove('show'), 1600);
+  }
+
+  window.bcChangeQty = function(id, delta) {
+    state.cart[id] = (state.cart[id]||0) + delta;
+    if (state.cart[id] <= 0) delete state.cart[id];
+    saveCart();
+    render();
+  };
+  window.bcRemoveItem = function(id) {
+    delete state.cart[id];
+    saveCart();
+    render();
+  };
+  window.bcSetView = function(view) {
+    state.view = view;
+    state.cartOpen = false;
+    window.scrollTo({top:0, behavior:'instant'});
+    render();
+  };
+  window.bcToggleCart = function(force) {
+    state.cartOpen = force !== undefined ? force : !state.cartOpen;
+    render();
+  };
+  window.bcSetShopFilter = function(cat) {
+    state.shopFilter = cat;
+    render();
+  };
+  window.bcToggleOrder = function(idx) {
+    const el = root.querySelector('[data-order-body="'+idx+'"]');
+    if (el) el.classList.toggle('open');
+  };
+
+  function updateCartBadge() {
+    const badge = root.querySelector('.bc-badge');
+    const count = cartCount();
+    if (badge) badge.textContent = count;
+    const badgeWrap = root.querySelector('[data-cart-badge-wrap]');
+    if (badgeWrap) badgeWrap.style.display = count > 0 ? 'flex' : 'none';
+  }
+
+  /* ---------------- Validation ---------------- */
+  function validateForm(data) {
+    const errs = {};
+    if (!data.name || data.name.trim().length < 2) errs.name = 'Enter your full name';
+    if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) errs.email = 'Enter a valid email';
+    if (!data.phone || data.phone.replace(/\D/g,'').length < 7) errs.phone = 'Enter a valid phone number';
+    if (!data.address || data.address.trim().length < 4) errs.address = 'Enter your street address';
+    if (!data.city || data.city.trim().length < 2) errs.city = 'Enter your city';
+    if (!data.zip || data.zip.trim().length < 3) errs.zip = 'Enter a valid ZIP / postal code';
+    if (!data.card || data.card.replace(/\D/g,'').length < 12) errs.card = 'Enter a valid card number';
+    if (!data.expiry || !/^\d{2}\/\d{2}$/.test(data.expiry)) errs.expiry = 'MM/YY';
+    if (!data.cvv || data.cvv.length < 3) errs.cvv = 'CVV';
+    return errs;
+  }
+
+  window.bcSubmitOrder = async function(ev) {
+    ev.preventDefault();
+    const form = ev.target;
+    const data = {
+      name: form.name.value, email: form.email.value, phone: form.phone.value,
+      address: form.address.value, city: form.city.value, state: form.state.value, zip: form.zip.value,
+      card: form.card.value, expiry: form.expiry.value, cvv: form.cvv.value,
+    };
+    const errs = validateForm(data);
+    state.formErrors = errs;
+    if (Object.keys(errs).length) { render(); return; }
+
+    const submitBtn = form.querySelector('[data-submit]');
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Placing order…'; }
+
+    const items = cartItems();
+    const subtotal = cartSubtotal();
+    const shipping = subtotal >= 75 || subtotal === 0 ? 0 : 8;
+    const total = subtotal + shipping;
+    const order = {
+      id: 'BC-' + Date.now().toString().slice(-8),
+      date: new Date().toISOString(),
+      customer: { name: data.name, email: data.email, phone: data.phone, address: data.address, city: data.city, state: data.state, zip: data.zip },
+      items: items.map(i => ({ id: i.id, name: i.name, price: i.price, qty: i.qty })),
+      subtotal, shipping, total,
+    };
+
+    try {
+      await loadOrders();
+      state.orders.unshift(order);
+      await saveOrders();
+      state.cart = {};
+      await saveCart();
+      state.lastOrder = order;
+      state.view = 'confirmation';
+      render();
+    } catch(e) {
+      console.error(e);
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Place order'; }
+      showToastQuiet('Something went wrong. Try again.');
+    }
+  };
+
+  /* ---------------- Render pieces ---------------- */
+  function topoPattern() {
+    let paths = '';
+    for (let i=0;i<7;i++) {
+      const y = 20 + i*22;
+      paths += `<path d="M -50 ${y} Q 150 ${y-40}, 350 ${y} T 750 ${y} T 1150 ${y}" stroke="white" stroke-width="1.4" fill="none"/>`;
+    }
+    return `<svg class="bc-hero-topo" viewBox="0 0 1100 200" preserveAspectRatio="none">${paths}</svg>`;
+  }
+
+  function productCard(p) {
+    const cat = CATS[p.cat];
+    return `
+      <div class="bc-card">
+        <div class="bc-card-media" style="background:${cat.bg}; color:${cat.color}">
+          ${ICONS[p.icon]}
+          <div class="bc-tag mono">
+            <div class="bc-tag-price">$${p.price}</div>
+            <div class="bc-tag-sku">${p.id}</div>
+          </div>
+        </div>
+        <div class="bc-card-body">
+          <div class="bc-card-cat" style="color:${cat.color}">${cat.label}</div>
+          <p class="bc-card-name">${p.name}</p>
+          <p class="bc-card-desc">${p.desc}</p>
+          <button class="bc-add-btn" onclick="bcAddToCart('${p.id}', this)">${ICONS.plus.replace(/width="\\d+" height="\\d+"/,'').replace('viewBox="0 0 24 24"','viewBox="0 0 24 24" width="13" height="13"')} Add to cart</button>
+        </div>
+      </div>`;
+  }
+
+  function renderHome() {
+    const featured = PRODUCTS.filter(p => ['CS-014','TR-127','WT-203','AP-301','TR-108','WT-226','CS-045','AP-320'].includes(p.id));
+    return `
+      <section class="bc-hero">
+        ${topoPattern()}
+        <div class="bc-hero-inner">
+          <div class="bc-hero-eyebrow">Trail-tested since 2014</div>
+          <h1 class="disp">Gear up.<br/>Head <em>out.</em></h1>
+          <p>Field-tested equipment for camp, trail, and water — built to outlast the trip and the one after that.</p>
+          <div class="bc-hero-ctas">
+            <button class="bc-btn bc-btn-primary" onclick="bcSetView('shop')">Shop all gear</button>
+            <button class="bc-btn bc-btn-outline" onclick="bcSetShopFilter('camp'); bcSetView('shop')">Browse camp collection</button>
+          </div>
+          <div class="bc-feature-strip">
+            <div class="bc-feature">${ICONS.truck}<div><div class="bc-feature-title">Free shipping</div><div class="bc-feature-sub">On orders over $75</div></div></div>
+            <div class="bc-feature">${ICONS.shield}<div><div class="bc-feature-title">60-day returns</div><div class="bc-feature-sub">No questions asked</div></div></div>
+            <div class="bc-feature">${ICONS.leaf}<div><div class="bc-feature-title">Built to last</div><div class="bc-feature-sub">Repair, not replace</div></div></div>
+          </div>
+        </div>
+      </section>
+      <div class="bc-page">
+        <div class="bc-section-label">Shop by category</div>
+        <div class="bc-cats">
+          ${Object.entries(CATS).map(([k,c])=>`
+            <button class="bc-cat-chip" onclick="bcSetShopFilter('${k}'); bcSetView('shop')">
+              <span class="bc-cat-dot" style="background:${c.color}"></span>${c.label}
+            </button>`).join('')}
+        </div>
+        <div class="bc-section-label" style="margin-top:36px">Featured gear</div>
+        <div class="bc-grid">${featured.map(productCard).join('')}</div>
+        <div style="text-align:center; margin-top:40px">
+          <button class="bc-btn bc-btn-dark" onclick="bcSetView('shop')">View full catalog</button>
+        </div>
+      </div>`;
+  }
+
+  function renderShop() {
+    const filter = state.shopFilter;
+    const list = filter === 'all' ? PRODUCTS : PRODUCTS.filter(p => p.cat === filter);
+    return `
+      <div class="bc-page" style="padding-top:36px">
+        <div class="bc-section-label">The full catalog</div>
+        <h2 class="disp" style="font-size:32px; margin:0 0 20px">All gear</h2>
+        <div class="bc-cats">
+          <button class="bc-cat-chip ${filter==='all'?'active':''}" onclick="bcSetShopFilter('all')">All</button>
+          ${Object.entries(CATS).map(([k,c])=>`
+            <button class="bc-cat-chip ${filter===k?'active':''}" onclick="bcSetShopFilter('${k}')">
+              <span class="bc-cat-dot" style="background:${c.color}"></span>${c.label}
+            </button>`).join('')}
+        </div>
+        <div class="bc-grid">${list.map(productCard).join('')}</div>
+      </div>`;
+  }
+
+  function renderCheckout() {
+    const items = cartItems();
+    if (!items.length) {
+      return `<div class="bc-page" style="padding-top:60px">
+        <div class="bc-order-empty">
+          ${ICONS.box}
+          <p style="margin:0 0 16px; font-size:15px">Your cart is empty — nothing to check out yet.</p>
+          <button class="bc-btn bc-btn-dark" onclick="bcSetView('shop')">Browse gear</button>
+        </div>
+      </div>`;
+    }
+    const subtotal = cartSubtotal();
+    const shipping = subtotal >= 75 ? 0 : 8;
+    const total = subtotal + shipping;
+    const errs = state.formErrors || {};
+    const f = (k) => errs[k] ? `<div class="bc-error">${errs[k]}</div>` : '';
+    const ec = (k) => errs[k] ? 'err' : '';
+    return `
+      <div class="bc-page" style="padding-top:36px">
+        <div class="bc-section-label">Checkout</div>
+        <h2 class="disp" style="font-size:32px; margin:0 0 24px">Complete your order</h2>
+        <form class="bc-checkout-wrap" onsubmit="bcSubmitOrder(event)" novalidate>
+          <div>
+            <div class="bc-form-card" style="margin-bottom:20px">
+              <h3>Shipping details</h3>
+              <div class="bc-form-grid">
+                <div class="bc-field full"><label>Full name</label><input class="${ec('name')}" name="name" type="text" placeholder="Jordan Rivera">${f('name')}</div>
+                <div class="bc-field"><label>Email</label><input class="${ec('email')}" name="email" type="email" placeholder="jordan@email.com">${f('email')}</div>
+                <div class="bc-field"><label>Phone</label><input class="${ec('phone')}" name="phone" type="tel" placeholder="(555) 123-4567">${f('phone')}</div>
+                <div class="bc-field full"><label>Street address</label><input class="${ec('address')}" name="address" type="text" placeholder="123 Trailhead Ave">${f('address')}</div>
+                <div class="bc-field"><label>City</label><input class="${ec('city')}" name="city" type="text" placeholder="Boulder">${f('city')}</div>
+                <div class="bc-field"><label>State</label><input name="state" type="text" placeholder="CO"></div>
+                <div class="bc-field"><label>ZIP</label><input class="${ec('zip')}" name="zip" type="text" placeholder="80301">${f('zip')}</div>
+              </div>
+            </div>
+            <div class="bc-form-card">
+              <h3>Payment</h3>
+              <div class="bc-form-grid">
+                <div class="bc-field full"><label>Card number</label><input class="${ec('card')} mono" name="card" type="text" placeholder="4242 4242 4242 4242">${f('card')}</div>
+                <div class="bc-field"><label>Expiry</label><input class="${ec('expiry')} mono" name="expiry" type="text" placeholder="MM/YY">${f('expiry')}</div>
+                <div class="bc-field"><label>CVV</label><input class="${ec('cvv')} mono" name="cvv" type="text" placeholder="123">${f('cvv')}</div>
+              </div>
+              <p style="font-size:11.5px; color:var(--ink-soft); margin:6px 0 0">This is a demo store — no real payment is processed.</p>
+            </div>
+          </div>
+          <div class="bc-summary-card">
+            <h3 style="font-size:13px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 16px">Order summary</h3>
+            ${items.map(i => `
+              <div class="bc-summary-item">
+                <div class="bc-summary-media" style="background:${CATS[i.cat].bg}; color:${CATS[i.cat].color}">${ICONS[i.icon]}</div>
+                <div>
+                  <div class="bc-summary-item-name">${i.name}</div>
+                  <div class="bc-summary-item-qty">Qty ${i.qty}</div>
+                </div>
+                <div class="bc-summary-item-price">$${(i.price*i.qty).toFixed(2)}</div>
+              </div>`).join('')}
+            <div style="margin-top:16px">
+              <div class="bc-row"><span>Subtotal</span><span>$${subtotal.toFixed(2)}</span></div>
+              <div class="bc-row"><span>Shipping</span><span>${shipping===0?'Free':'$'+shipping.toFixed(2)}</span></div>
+              <div class="bc-row total"><span>Total</span><span>$${total.toFixed(2)}</span></div>
+            </div>
+            <button class="bc-btn bc-btn-primary" data-submit style="width:100%; justify-content:center; margin-top:16px; background:var(--forest); color:white">Place order</button>
+          </div>
+        </form>
+      </div>`;
+  }
+
+  function renderConfirmation() {
+    const o = state.lastOrder;
+    if (!o) { return renderHome(); }
+    return `
+      <div class="bc-page">
+        <div class="bc-confirm">
+          <div class="bc-confirm-icon">${ICONS.check}</div>
+          <h2 class="disp">Order placed</h2>
+          <p>Thanks, ${o.customer.name.split(' ')[0]} — your gear is being packed. A confirmation was sent to ${o.customer.email}.</p>
+          <div class="bc-confirm-id">Order number <span class="mono">${o.id}</span></div>
+          <div class="bc-confirm-actions">
+            <button class="bc-btn bc-btn-dark" onclick="bcSetView('shop')">Continue shopping</button>
+            <button class="bc-btn bc-btn-outline" style="color:var(--ink); border-color:var(--line)" onclick="bcSetView('orders')">View order history</button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function renderOrders() {
+    if (!state.orders.length) {
+      return `<div class="bc-page" style="padding-top:36px">
+        <div class="bc-order-empty">
+          ${ICONS.box}
+          <p style="margin:0 0 16px; font-size:15px">No orders yet — head to the shop and gear up.</p>
+          <button class="bc-btn bc-btn-dark" onclick="bcSetView('shop')">Shop gear</button>
+        </div>
+      </div>`;
+    }
+    return `
+      <div class="bc-page" style="padding-top:36px">
+        <div class="bc-section-label">Your account</div>
+        <h2 class="disp" style="font-size:32px; margin:0 0 24px">Order history</h2>
+        ${state.orders.map((o, idx) => `
+          <div class="bc-order">
+            <div class="bc-order-head" onclick="bcToggleOrder(${idx})">
+              <div>
+                <div class="bc-order-id mono">${o.id}</div>
+                <div class="bc-order-date">${new Date(o.date).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'})}</div>
+              </div>
+              <span class="bc-order-count">${o.items.reduce((s,i)=>s+i.qty,0)} item${o.items.reduce((s,i)=>s+i.qty,0)!==1?'s':''}</span>
+              <div class="bc-order-total">$${o.total.toFixed(2)}</div>
+            </div>
+            <div class="bc-order-body" data-order-body="${idx}">
+              ${o.items.map(i => `<div class="bc-order-line"><span>${i.name} × ${i.qty}</span><span>$${(i.price*i.qty).toFixed(2)}</span></div>`).join('')}
+              <div class="bc-order-line" style="border-bottom:none; padding-top:12px"><span>Shipping</span><span>${o.shipping===0?'Free':'$'+o.shipping.toFixed(2)}</span></div>
+              <div class="bc-order-line" style="border-bottom:none; font-weight:800"><span>Total</span><span>$${o.total.toFixed(2)}</span></div>
+              <div class="bc-order-line" style="border-bottom:none; color:var(--ink-soft); font-size:12px">Shipping to ${o.customer.address}, ${o.customer.city}${o.customer.state? ', '+o.customer.state:''} ${o.customer.zip}</div>
+            </div>
+          </div>`).join('')}
+      </div>`;
+  }
+
+  function renderCartDrawer() {
+    const items = cartItems();
+    const subtotal = cartSubtotal();
+    const shipping = subtotal >= 75 || subtotal === 0 ? 0 : 8;
+    return `
+      <div class="bc-overlay ${state.cartOpen?'open':''}" onclick="bcToggleCart(false)"></div>
+      <div class="bc-drawer ${state.cartOpen?'open':''}">
+        <div class="bc-drawer-head">
+          <h3 class="bc-drawer-title disp">Your cart</h3>
+          <button class="bc-drawer-close" onclick="bcToggleCart(false)">${ICONS.close}</button>
+        </div>
+        <div class="bc-drawer-body">
+          ${items.length ? items.map(i => `
+            <div class="bc-cart-item">
+              <div class="bc-cart-item-media" style="background:${CATS[i.cat].bg}; color:${CATS[i.cat].color}">${ICONS[i.icon]}</div>
+              <div class="bc-cart-item-info">
+                <div class="bc-cart-item-name">${i.name}</div>
+                <div class="bc-cart-item-price mono">$${i.price.toFixed(2)}</div>
+                <div class="bc-qty-row">
+                  <button class="bc-qty-btn" onclick="bcChangeQty('${i.id}', -1)">${ICONS.minus}</button>
+                  <span class="bc-qty-val">${i.qty}</span>
+                  <button class="bc-qty-btn" onclick="bcChangeQty('${i.id}', 1)">${ICONS.plus}</button>
+                  <button class="bc-remove-btn" onclick="bcRemoveItem('${i.id}')">Remove</button>
+                </div>
+              </div>
+            </div>`).join('') : `
+            <div class="bc-drawer-empty">
+              ${ICONS.box}
+              <p style="margin:0">Your cart is empty.</p>
+            </div>`}
+        </div>
+        ${items.length ? `
+        <div class="bc-drawer-foot">
+          <div class="bc-row"><span>Subtotal</span><span>$${subtotal.toFixed(2)}</span></div>
+          <div class="bc-row"><span>Shipping</span><span>${shipping===0?'Free':'$'+shipping.toFixed(2)}</span></div>
+          <div class="bc-row total"><span>Total</span><span>$${(subtotal+shipping).toFixed(2)}</span></div>
+          <button class="bc-btn bc-btn-dark" onclick="bcToggleCart(false); bcSetView('checkout')">Checkout</button>
+        </div>` : ''}
+      </div>`;
+  }
+
+  function renderNav() {
+    const count = cartCount();
+    return `
+      <div class="bc-nav">
+        <div class="bc-nav-inner">
+          <button class="bc-logo" onclick="bcSetView('home')">
+            <span class="bc-logo-mark" style="color:white">${ICONS.mountain}</span>
+            <span class="bc-logo-text disp">Basecamp Supply Co.<span>Field-tested gear</span></span>
+          </button>
+          <div class="bc-navlinks">
+            <button class="bc-navlink ${state.view==='home'?'active':''}" onclick="bcSetView('home')">Home</button>
+            <button class="bc-navlink ${state.view==='shop'?'active':''}" onclick="bcSetView('shop')">Shop</button>
+            <button class="bc-navlink ${state.view==='orders'?'active':''}" onclick="bcSetView('orders')">Orders</button>
+          </div>
+          <div class="bc-navright">
+            <button class="bc-icon-btn" onclick="bcToggleCart()" aria-label="Open cart">
+              ${ICONS.cart}
+              <span class="bc-badge" data-cart-badge-wrap style="display:${count>0?'flex':'none'}">${count}</span>
+            </button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function renderFooter() {
+    return `<div class="bc-footer">Basecamp Supply Co. — a demo store built for this conversation. Orders are saved to your browser's Claude storage, not a real payment processor.</div>`;
+  }
+
+  function renderToastOnly() {
+    const t = root.querySelector('.bc-toast');
+    if (t && !state.toast) t.classList.remove('show');
+  }
+
+  function render() {
+    let body = '';
+    if (state.view === 'loading') {
+      body = `<div class="bc-loading"><div class="bc-spinner"></div> Loading your gear shop…</div>`;
+    } else if (state.view === 'home') body = renderHome();
+    else if (state.view === 'shop') body = renderShop();
+    else if (state.view === 'checkout') body = renderCheckout();
+    else if (state.view === 'confirmation') body = renderConfirmation();
+    else if (state.view === 'orders') body = renderOrders();
+
+    root.innerHTML = `
+      ${state.view !== 'loading' ? renderNav() : ''}
+      ${body}
+      ${state.view !== 'loading' ? renderFooter() : ''}
+      ${state.view !== 'loading' ? renderCartDrawer() : ''}
+      <div class="bc-toast">${state.toast||''}</div>
+    `;
+  }
+
+  /* ---------------- Init ---------------- */
+  (async function init() {
+    render();
+    try {
+      await loadCart();
+      await loadOrders();
+    } catch(e) { console.error(e); }
+    state.view = 'home';
+    render();
+  })();
+})();
+</script>
+
+</body>
+</html>
